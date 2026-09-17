@@ -7,6 +7,7 @@ with open('robot_config.json', 'r') as file:
 # File closed automatically,
 # even if an exception occurs!
 
+
 class ConfigurationManager():
 
     """Manages robot configurations from files."""
@@ -19,6 +20,8 @@ class ConfigurationManager():
 
     def load(self):
         """Load configuration from file (auto-detect format)."""
+        with open('robot_config.json', 'r') as file:
+            config_data = json.load(file)
         # Determine format from file extension
         # Parse appropriate format
         # Store in self.config
