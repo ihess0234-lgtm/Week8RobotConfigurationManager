@@ -1,0 +1,11 @@
+{
+  "robot_id": "ari_explorer_01",
+  "sensors": {
+    "ir_count": 4,
+    "has_camera": true
+  },
+  "movement": {
+    "max_speed": 2.5,
+    "battery_drain_per_meter": 1.2
+  }
+}

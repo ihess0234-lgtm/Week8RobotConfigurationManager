@@ -1,12 +1,31 @@
-# from test_configuration import ConfigurationError, ConfigFileNotFoundError, ConfigFileNotFoundError, ConfigParseError
+from test_configuration import ConfigValidationError, ConfigurationError, ConfigFileNotFoundError, ConfigFileNotFoundError, ConfigParseError
 import json, logging, os
 
-with open('robot_config.txt', 'r') as file:
-    config = json.load(file)
+# reads file
+# with open('robot_config.json', 'r') as file:
+#     config = json.load(file)
 
-# File closed automatically,
-# even if an exception occurs!
+# # Writing configuration files (creates or overwrites)
+# with open('robot_config.json', 'w') as file:
+#     json.dump(config, file, indent=2)
 
+# # Appending sensor logs
+# with open('sensor_log.txt', 'a') as file:
+#     file.write(f"[test1] test2\n")
+
+logger = logging.getLogger(__name__)
+try:
+    config_mgr = ConfigurationError('robot_config.json')
+    config_mgr.validate()
+except ConfigFileNotFoundError as e:
+    logger.warning("No config file — using defaults. (%s)", e.file_path)
+    config_mgr = ConfigurationError.from_defaults()
+except ConfigParseError as e:
+    logger.error("Corrupted config file: %s", e)
+    raise  # Surface this — don't silently swallow it
+except ConfigValidationError as e:
+    logger.error("Invalid config: %s", e)
+    raise
 
 class ConfigurationManager():
 
