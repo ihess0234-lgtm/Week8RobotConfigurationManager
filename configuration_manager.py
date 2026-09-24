@@ -1,7 +1,7 @@
 # from test_configuration import ConfigurationError, ConfigFileNotFoundError, ConfigFileNotFoundError, ConfigParseError
 import json, logging, os
 
-with open('robot_config.json', 'r') as file:
+with open('robot_config.txt', 'r') as file:
     config = json.load(file)
 
 # File closed automatically,
