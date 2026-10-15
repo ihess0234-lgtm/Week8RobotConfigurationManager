@@ -1,0 +1,12 @@
+{
+  "robot_id": "ari_gripper_02",
+  "battery_level": 72,
+  "sensors": {
+    "ir_count": 4,
+    "threshold": 0.5
+  },
+  "gripper": {
+    "grip_strength": 18.5,
+    "max_opening": 0.12
+  }
+}

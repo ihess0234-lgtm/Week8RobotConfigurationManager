@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot>
+  <robot_id>ari_arm_03</robot_id>
+  <battery_level>91</battery_level>
+  <sensors>
+    <ir_count>8</ir_count>
+    <threshold>0.4</threshold>
+  </sensors>
+  <arm>
+    <reach>1.8</reach>
+    <payload>12.5</payload>
+  </arm>
+</robot>

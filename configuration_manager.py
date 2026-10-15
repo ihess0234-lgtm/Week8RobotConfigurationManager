@@ -59,9 +59,32 @@ class ConfigurationManager():
 
     def load(self):
         """Load configuration from file (auto-detect format)."""
+        """Load configuration data and store it in self.config."""
         if not os.path.exists(self.config_file):
             logger.error("Config file not found: %s", self.config_file)
             raise ConfigFileNotFoundError(self.config_file)
+
+        file_format = self._detect_format(self.config_file)
+
+        try:
+            with open(self.config_file, 'r', encoding='utf-8') as handle:
+                if file_format == 'json':
+                    self.config = json.load(handle)
+                elif file_format == 'yaml':
+                    self.config = yaml.safe_load(handle) or {}
+                elif file_format == 'xml':
+                    self.config = self._xml_to_dict(ET.parse(handle).getroot())
+        except (json.JSONDecodeError, yaml.YAMLError, ET.ParseError, ValueError) as exc:
+            logger.error("Parse error in '%s': %s", self.config_file, exc)
+            raise ConfigParseError(self.config_file, str(exc)) from exc
+        except OSError as exc:
+            logger.error("File I/O error while reading '%s': %s", self.config_file, exc)
+            raise ConfigParseError(self.config_file, str(exc)) from exc
+
+        if self.config is None:
+            self.config = {}
+
+        logger.info("Configuration loaded successfully from %s", self.config_file)
 
         file_format = self._detect_format(self.config_file)
         # Determine format from file extension

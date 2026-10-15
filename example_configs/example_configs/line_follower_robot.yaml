@@ -1,0 +1,5 @@
+robot_id: ari_line_follower_01
+battery_level: 88
+sensors:
+  ir_count: 6
+  threshold: 0.45
