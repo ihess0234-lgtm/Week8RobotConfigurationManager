@@ -14,18 +14,12 @@ import json, logging, os
 #     file.write(f"[test1] test2\n")
 
 logger = logging.getLogger(__name__)
-try:
-    config_mgr = ConfigurationError('robot_config.json')
-    config_mgr.validate()
-except ConfigFileNotFoundError as e:
-    logger.warning("No config file — using defaults. (%s)", e.file_path)
-    config_mgr = ConfigurationError.from_defaults()
-except ConfigParseError as e:
-    logger.error("Corrupted config file: %s", e)
-    raise  # Surface this — don't silently swallow it
-except ConfigValidationError as e:
-    logger.error("Invalid config: %s", e)
-    raise
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
 
 class ConfigurationManager():
 
@@ -67,7 +61,18 @@ class ConfigurationManager():
         # Check values are in valid ranges
         # Raise ConfigValidationError with all errors if any fail
 
-
+try:
+    config_mgr = ConfigurationManager('robot_config.json')
+    config_mgr.validate()
+except ConfigFileNotFoundError as e:
+    logger.warning("No config file — using defaults. (%s)", e.file_path)
+    config_mgr = ConfigurationManager.from_defaults()
+except ConfigParseError as e:
+    logger.error("Corrupted config file: %s", e)
+    raise  # Surface this — don't silently swallow it
+except ConfigValidationError as e:
+    logger.error("Invalid config: %s", e)
+    raise
 
 # Loads JSON and one other format (XML or YAML — your choice)
 # Auto-detect format from file extension
